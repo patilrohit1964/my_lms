@@ -19,11 +19,30 @@ import {
     SheetTrigger
 } from "@/components/ui/sheet"
 import DarkMode from '@/DarkMode'
+import { useLogoutUserMutation } from "@/features/api/apiApi"
 import { Menu, School } from 'lucide-react'
-import { Link } from "react-router-dom"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 const Navbar = () => {
 
-    const user = true
+    const { user } = useSelector(store => store.auth)
+
+    const navigate = useNavigate()
+    const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
+
+    const logoutHandler = async () => {
+        await logoutUser();
+        navigate("/login")
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(data.message || "Logout Success");
+        }
+    }, [isSuccess])
+
     return (
 
         <div className='h-16 dark:bg-[#0a0a0a] bg-white border-b dark:border-b-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
@@ -41,7 +60,7 @@ const Navbar = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Avatar className="cursor-pointer">
-                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarImage src={user?.photoUrl || "https://github.com/shadcn.png"} />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </DropdownMenuTrigger>
@@ -56,19 +75,24 @@ const Navbar = () => {
                                         <Link to={"profile"}>Edit Profile</Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={logoutHandler}>
                                     Log out
                                 </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    Dashboard
-                                </DropdownMenuItem>
+                                {user.role === "instructor" && (
+                                    <>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem>
+                                            Dashboard
+                                        </DropdownMenuItem>
+                                    </>
+                                )
+                                }
                             </DropdownMenuContent>
                         </DropdownMenu>
                         :
                         <div className='flex gap-4'>
-                            <Button variant="outline">Login</Button>
-                            <Button >SignUp</Button>
+                            <Button variant="outline" onClick={() => navigate("/login")}>Login</Button>
+                            <Button onClick={() => navigate("/login")}>SignUp</Button>
                         </div>
                     }
                     <DarkMode />

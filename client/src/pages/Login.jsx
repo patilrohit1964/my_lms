@@ -75,7 +75,7 @@ function Login() {
             navigate("/")
         }
         if (loginError) {
-            toast.error("Failed to login");
+            toast.error(loginError.data.message || "Failed to login");
         }
     }, [
         registerLoading,
@@ -89,7 +89,7 @@ function Login() {
     return (
         // when we use this ui library then always set carefully their value attribute for toggle
         <div className="flex justify-center items-center w-full mt-24">
-            <Tabs defaultValue="account" className="w-[400px]">
+            <Tabs defaultValue="login" className="w-[400px]">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="signup">SignUP</TabsTrigger>
                     <TabsTrigger value="login">Login</TabsTrigger>

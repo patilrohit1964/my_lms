@@ -13,8 +13,9 @@ import { toast } from 'sonner'
 const Profile = () => {
     const [name, setName] = useState("");
     const [profilePhoto, setProfilePhoto] = useState("")
-    // remember when we use rtk query and fetch our api's then when we fetch api with mutation then user [] and when user query then use {}
-    const { data, isLoading } = useLoadUserQuery()
+    // remember when we use rtk query and fetch our api's then when we fetch api with mutation then use [] and when use query then use {}
+    const { data, isLoading, refetch } = useLoadUserQuery()
+    //here we use refetch because when we update any data and we want showt without refresh then use this refetch and fetch updated data
     const [updateUser, { data: updateUserData, isLoading: updateUserLoading, isError: updateUserError, isSuccess: updateUserSuccess }] = useUpdateUserMutation()
 
     const onChangeHandler = (e) => {
@@ -22,7 +23,6 @@ const Profile = () => {
         if (file) {
             setProfilePhoto(file)
         }
-
     }
 
     const updateUserHandler = async () => {
@@ -33,11 +33,18 @@ const Profile = () => {
     }
 
     useEffect(() => {
+        refetch();
+    }, [])
+
+    useEffect(() => {
         if (updateUserSuccess) {
-            toast.success(updateUserData.message || 'Profile updated successfully')
+            refetch();
+            toast.success(data.message || 'Profile updated successfully')
         }
-        
-    }, [updateUserError, data, updateUserSuccess])
+        if (updateUserError) {
+            toast.error('Failed to update profile');
+        }
+    }, [updateUserError, updateUserData, updateUserSuccess])
 
     return (
         <div className='max-w-4xl mx-auto px-4 my-24'>
@@ -91,8 +98,8 @@ const Profile = () => {
                                     </div>
                                 </div>
                                 <DialogFooter>
-                                    <Button disabled={isLoading} onClick={updateUserHandler}>
-                                        {isLoading ? <><Loader2 className='mr-2 h-4 w-4 animate-spin' />Please Wait</>
+                                    <Button disabled={updateUserLoading} onClick={updateUserHandler}>
+                                        {updateUserLoading ? <><Loader2 className='mr-2 h-4 w-4 animate-spin' />Please Wait</>
                                             : "Save Changes"
                                         }
                                     </Button>
