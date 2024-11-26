@@ -6,8 +6,16 @@ const upload = require("../utils/multer");
 const {
   createCourse,
   getAllCreatorCourses,
+  editCourse,
+  getCourseById,
+  getCourseAndDelete,
 } = require("../controller/course.controller");
 
 router.route("/").post(isAuthenticated, createCourse);
 router.route("/").get(isAuthenticated, getAllCreatorCourses);
+router
+  .route("/:courseId")
+  .put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
+router.route("/:courseId").get(isAuthenticated, getCourseById);
+router.route("/:courseId").delete(isAuthenticated, getCourseAndDelete);
 module.exports = router;

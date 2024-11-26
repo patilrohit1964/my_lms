@@ -1,4 +1,8 @@
 const Course = require("../models/course.model");
+const {
+  deleteMediaFromCloudinary,
+  uploadMedia,
+} = require("../utils/cloudinary");
 
 exports.createCourse = async (req, res) => {
   try {
@@ -40,6 +44,92 @@ exports.getAllCreatorCourses = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Server Error",
+      success: false,
+    });
+  }
+};
+
+exports.editCourse = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+    const {
+      courseTitle,
+      subTitle,
+      description,
+      category,
+      courseLevel,
+      coursePrice,
+    } = req.body;
+    const thumbnail = req.file;
+    let course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    let courseThumbnail;
+    if (thumbnail) {
+      if (course.courseThumbnail) {
+        const publicId = course.courseThumbnail.split("/").pop().split(".")[0];
+        await deleteMediaFromCloudinary(publicId); //delete old image
+      }
+      // upload a thumbnail on Cloudinary
+      courseThumbnail = await uploadMedia(thumbnail.path);
+    }
+
+    const updateData = {
+      courseTitle,
+      subTitle,
+      description,
+      category,
+      courseLevel,
+      coursePrice,
+      courseThumbnail: courseThumbnail?.secure_url,
+    };
+    course = await Course.findByIdAndUpdate(courseId, updateData, {
+      new: true, //here we use new because we can see new updated data
+    });
+    return res
+      .status(200)
+      .json({ success: true, course, message: "course updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error faied to create course",
+      success: false,
+    });
+  }
+};
+
+exports.getCourseById = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    return res.status(200).json({ success: true, course });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error get course by id",
+      success: false,
+    });
+  }
+};
+
+exports.getCourseAndDelete = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const course = await Course.findByIdAndDelete(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, course, message: "Course deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error id not found",
       success: false,
     });
   }
