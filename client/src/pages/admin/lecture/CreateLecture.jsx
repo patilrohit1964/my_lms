@@ -11,19 +11,37 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useCreateCourseMutation } from '@/features/api/courseApi'
+import { useCreateCourseMutation, useCreateLectureMutation, useGetCourseLectureQuery } from '@/features/api/courseApi'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
+import Lecture from './Lecture'
 const CreateLecture = () => {
-    const [lectureTitle, setLectureTitle] = useState()
-    const isLoading = false
+
+    const [lectureTitle, setLectureTitle] = useState("");
     const { courseId } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const [createLecture, { data, isLoading, error, isSuccess }] = useCreateLectureMutation();
+    const { data: lectureData, isLoading: lectureDataLoading, isError: lectureError, refetch } = useGetCourseLectureQuery(courseId)
     const createLectureHandler = async () => {
-        
+        await createLecture({ lectureTitle, courseId })
     }
+
+    useEffect(() => {
+
+        if (isSuccess) {
+            refetch();
+            toast.success(data.message || "Lecture created successfully");
+            // navigate(`/admin/course/${courseId}/lecture`);
+        }
+        if (error) {
+            toast.error(error.data.message || "Failed to create lecture");
+        }
+
+    }, [isSuccess, error])
+
     return (
         <div className='flex-1 mx-10'>
             <div className='mb-4'>
@@ -33,7 +51,7 @@ const CreateLecture = () => {
             <div className='space-y-4'>
                 <div>
                     <Label>Title</Label>
-                    <Input type="text" placeholder="Your Title Name" value={lectureTitle} onChange={""} />
+                    <Input type="text" placeholder="Your Title Name" value={lectureTitle} onChange={(e) => setLectureTitle(e.target.value)} />
                 </div>
 
                 <div className='flex items-center gap-2'>
@@ -47,6 +65,15 @@ const CreateLecture = () => {
                             "Create Lecture"
                         }
                     </Button>
+                </div>
+                <div className='mt-10'>
+                    {lectureDataLoading ? <p>Loading Lectures...</p> : lectureError ? <p>Failed to Load Lectures</p> :
+                        lectureData.lectures.length === 0 ? <p>No Lecture Available</p> : (
+                            lectureData.lectures.map((lecture, index) => <Lecture key={lecture._id} index={index} courseId={courseId} lecture={lecture} />)
+                        )
+
+                    }
+
                 </div>
             </div>
 

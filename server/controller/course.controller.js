@@ -1,4 +1,5 @@
 const Course = require("../models/course.model");
+const Lecture = require("../models/Lecture.model");
 const {
   deleteMediaFromCloudinary,
   uploadMedia,
@@ -130,6 +131,56 @@ exports.getCourseAndDelete = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Server Error id not found",
+      success: false,
+    });
+  }
+};
+
+// lecture logic
+exports.createLecture = async (req, res) => {
+  try {
+    const { lectureTitle } = req.body;
+    const { courseId } = req.params;
+
+    if (!lectureTitle || !courseId) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const lecture = await Lecture.create({
+      lectureTitle,
+    });
+    const course = await Course.findById(courseId);
+    if (course) {
+      course.lectures.push(lecture._id);
+      await course.save();
+    }
+    return res.status(201).json({
+      success: true,
+      message: "Lecture created successfully",
+      lecture,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error creating lecture",
+      success: false,
+    });
+  }
+};
+
+exports.getCourseLecture = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const course = await Course.findById(courseId).populate("lectures").exec();
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    return res.status(200).json({ success: true, lectures: course.lectures });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error getting course lectures",
       success: false,
     });
   }

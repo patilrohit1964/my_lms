@@ -9,7 +9,7 @@ cloudinary.config({
 exports.uploadMedia = async (file) => {
   try {
     const uploadResponce = await cloudinary.uploader.upload(file, {
-      resource_type: "auto",
+      resource_type: "auto",    
     });
     return uploadResponce;
   } catch (error) {

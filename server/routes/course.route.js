@@ -9,6 +9,8 @@ const {
   editCourse,
   getCourseById,
   getCourseAndDelete,
+  createLecture,
+  getCourseLecture,
 } = require("../controller/course.controller");
 
 router.route("/").post(isAuthenticated, createCourse);
@@ -18,4 +20,6 @@ router
   .put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
 router.route("/:courseId").get(isAuthenticated, getCourseById);
 router.route("/:courseId").delete(isAuthenticated, getCourseAndDelete);
+router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
+router.route("/:courseId/lecture").get(isAuthenticated, getCourseLecture  );
 module.exports = router;
