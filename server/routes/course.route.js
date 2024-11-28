@@ -11,6 +11,9 @@ const {
   getCourseAndDelete,
   createLecture,
   getCourseLecture,
+  editLecture,
+  removeLecture,
+  getLectureById,
 } = require("../controller/course.controller");
 
 router.route("/").post(isAuthenticated, createCourse);
@@ -21,5 +24,10 @@ router
 router.route("/:courseId").get(isAuthenticated, getCourseById);
 router.route("/:courseId").delete(isAuthenticated, getCourseAndDelete);
 router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
-router.route("/:courseId/lecture").get(isAuthenticated, getCourseLecture  );
+router.route("/:courseId/lecture").get(isAuthenticated, getCourseLecture);
+router
+  .route("/:courseId/lecture/:lectureId")
+  .post(isAuthenticated, editLecture);
+router.route("/lecture/:lectureId").delete(isAuthenticated, removeLecture);
+router.route("/lecture/:lectureId").get(isAuthenticated, getLectureById);
 module.exports = router;

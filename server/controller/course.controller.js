@@ -185,3 +185,89 @@ exports.getCourseLecture = async (req, res) => {
     });
   }
 };
+
+exports.editLecture = async (req, res) => {
+  try {
+    const { lectureTitle, videoInfo, isPreviewFree } = req.body;
+    const { courseId, lectureId } = req.params;
+    const lecture = await Lecture.findById(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
+    }
+    // update lecture
+    if (lectureTitle) lecture.lectureTitle = lectureTitle;
+
+    if (videoInfo) lecture.videoUrl = videoInfo.videoUrl;
+
+    if (videoInfo) lecture.publicId = videoInfo.publicId;
+
+    lecture.isPreviewFree = isPreviewFree;
+    await lecture.save();
+
+    // ensure the course still has the lecture id if it was not already added
+    const course = await Course.findById(courseId);
+    if (course && !course.lectures.includes(lecture._id)) {
+      course.lectures.push(lecture._id);
+      await course.save();
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Lecture updated successfully",
+      lecture,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error edit course lectures",
+      success: false,
+    });
+  }
+};
+
+exports.removeLecture = async (req, res) => {
+  try {
+    const { lectureId } = req.params;
+
+    const lecture = await Lecture.findByIdAndDelete(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    // delete lecture from cloudinary as well
+    if (lecture.publicId) {
+      await deleteMediaFromCloudinary(lecture.publicId);
+    }
+
+    // remove the lecture from the associated course
+    await Course.updateOne(
+      { lectures: lectureId }, //find the course that contains the lecture
+      { $pull: { lectures: lectureId } } //remove the lecture id from the lecture array
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Lecture removed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error failed to remove lecture",
+      success: false,
+    });
+  }
+};
+
+exports.getLectureById = async (req, res) => {
+  try {
+    const { lectureId } = req.params;
+    const lecture = await Lecture.findById(lectureId);
+    if (!lecture) {
+      return res.status(404).json({ message: "Lecture not found" });
+    }
+    return res.status(200).json({ success: true, lecture });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error failed to remove lecture",
+      success: false,
+    });
+  }
+};
