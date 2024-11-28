@@ -1,11 +1,16 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 import Course from './Course'
+import { useGetPublishedCourseQuery } from '@/features/api/courseApi'
 
 
 const Courses = () => {
 
-    const isLoading = false
+    const { data, isLoading, error, isSuccess, isError } = useGetPublishedCourseQuery()
+
+
+    if (isError) return <h1>Some Error Occured white fetching courses</h1>
+
 
     return (
         <div className='bg-gray-50'>
@@ -15,8 +20,8 @@ const Courses = () => {
                     {isLoading ? Array.from({ length: 8 }).map((_, index) => (
                         <CourseSkeleton key={index} />
                     )) :
-                        Array.from({ length: 10 }).map((_, index) => (
-                            <Course key={index} />
+                        data?.courses && data?.courses.map((course, index) => (
+                            <Course key={course._id} course={course} />
                         ))
                     }
                 </div>

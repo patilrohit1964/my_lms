@@ -14,9 +14,12 @@ const {
   editLecture,
   removeLecture,
   getLectureById,
+  togglePublishCourse,
+  getPublishedCourse,
 } = require("../controller/course.controller");
 
 router.route("/").post(isAuthenticated, createCourse);
+router.route("/published-courses").get(isAuthenticated, getPublishedCourse);
 router.route("/").get(isAuthenticated, getAllCreatorCourses);
 router
   .route("/:courseId")
@@ -30,4 +33,5 @@ router
   .post(isAuthenticated, editLecture);
 router.route("/lecture/:lectureId").delete(isAuthenticated, removeLecture);
 router.route("/lecture/:lectureId").get(isAuthenticated, getLectureById);
+router.route("/:courseId").patch(isAuthenticated, togglePublishCourse);
 module.exports = router;

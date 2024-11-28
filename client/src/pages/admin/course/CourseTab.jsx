@@ -15,15 +15,15 @@ import {
 } from "@/components/ui/select"
 import { Loader2 } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEditCourseMutation, useGetCourseByIdQuery } from '@/features/api/courseApi'
+import { useEditCourseMutation, useGetCourseByIdQuery, usePublishedCourseMutation } from '@/features/api/courseApi'
 import { toast } from 'sonner'
 const CourseTab = () => {
     const navigate = useNavigate();
     const { courseId } = useParams();
     const [editCourse, { data, isLoading, isError, isSuccess, error }] = useEditCourseMutation();
-    const { data: courseData, isLoading: courseLoading, error: courseError, isError: courseIsError, isSuccess: courseIsSuccess } = useGetCourseByIdQuery(courseId, { refetchOnMountOrArgChange: true });
+    const { data: courseData, isLoading: courseLoading, error: courseError, isError: courseIsError, isSuccess: courseIsSuccess, refetch } = useGetCourseByIdQuery(courseId, { refetchOnMountOrArgChange: true });
     // 1.when we fetch api with rtk query and when data get with id then pass like this 2.when we want to fetch any prop or data change then call our this get api then we can use this refetchonmountchangearg method and call automatically
-
+    const [publishedCourse, { }] = usePublishedCourseMutation()
     useEffect(() => {
         if (courseData?.course) {
             const course = courseData?.course
@@ -38,7 +38,7 @@ const CourseTab = () => {
             })
         }
     }, [courseData])
-    const isPublished = true
+
     const [input, setInput] = useState({
         courseTitle: "",
         subTitle: "",
@@ -84,6 +84,19 @@ const CourseTab = () => {
         formData.append('courseThumbnail', input.courseThumbnail);
         await editCourse({ formData, courseId });
     }
+
+    const publishStatusHandler = async (action) => {
+        try {
+            const responce = await publishedCourse({ courseId, query: action })
+            if (responce.data) {
+                refetch() // this will call our get course by id query again with new course id to get updated data
+                toast.success(responce.data.message);
+            }
+        } catch (error) {
+            toast.error("Failed to publish or unpublish course")
+        }
+    }
+
     useEffect(() => {
         if (isSuccess) {
             toast.success(data?.message || "Your Course has been Update successfully")
@@ -102,8 +115,8 @@ const CourseTab = () => {
                     <CardDescription>Make Changes to your courses here. Click save when you're done.</CardDescription>
                 </div>
                 <div className='space-x-3'>
-                    <Button variant="outline">
-                        {isPublished ? "Unpublished" : "Published"}
+                    <Button disabled={courseData?.course?.lectures?.length === 0} variant="outline" onClick={() => publishStatusHandler(courseData?.course?.isPublished ? "false" : "true")}>
+                        {courseData?.course?.isPublished ? "Unpublished" : "Published"}
                     </Button>
                     <Button>Remove Course</Button>
                 </div>
@@ -190,7 +203,7 @@ const CourseTab = () => {
                     </Button>
                 </div>
             </CardContent>
-        </Card>
+        </Card >
     )
 }
 
