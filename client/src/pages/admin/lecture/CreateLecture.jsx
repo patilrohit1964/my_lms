@@ -26,7 +26,7 @@ const CreateLecture = () => {
     const [createLecture, { data, isLoading, error, isSuccess }] = useCreateLectureMutation();
     const { data: lectureData, isLoading: lectureDataLoading, isError: lectureError, refetch } = useGetCourseLectureQuery(courseId)
     const createLectureHandler = async () => {
-        await createLecture({ lectureTitle, courseId })
+        await createLecture({ lectureTitle, courseId });
     }
 
     useEffect(() => {
@@ -34,6 +34,7 @@ const CreateLecture = () => {
         if (isSuccess) {
             refetch();
             toast.success(data.message || "Lecture created successfully");
+            setLectureTitle("");
             // navigate(`/admin/course/${courseId}/lecture`);
         }
         if (error) {
