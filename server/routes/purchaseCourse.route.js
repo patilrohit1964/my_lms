@@ -3,6 +3,8 @@ const isAuthenticated = require("../middlewares/isAuthenticated");
 const {
   createCheckoutSession,
   stripeWebhook,
+  getCourseDetailWithPurchaseStatus,
+  getAllPurchasedCourse,
 } = require("../controller/purchaseCourse.controller");
 
 const router = express.Router();
@@ -13,7 +15,11 @@ router
 router
   .route("/webhook")
   .post(express.raw({ type: "application/json" }), stripeWebhook);
-router.route("/course/:courseId/detail-with-status").get();
+router
+  .route("/course/:courseId/details-with-status")
+  .get(isAuthenticated, getCourseDetailWithPurchaseStatus);
+
+router.route("/").get(isAuthenticated, getAllPurchasedCourse);
 
 // router.route("/").get(getAllPurchaseCourses);
 
