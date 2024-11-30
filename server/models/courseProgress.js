@@ -11,3 +11,5 @@ const courseProgressSchema = new mongoose.Schema({
   completed: { type: Boolean },
   lectureProgress: [lectureProgressSchema],
 });
+
+module.exports = mongoose.model("CourseProgress", courseProgressSchema);
