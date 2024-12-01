@@ -5,6 +5,7 @@ const userRoute = require("./routes/user.route");
 const courseRoute = require("./routes/course.route");
 const mediaRoute = require("./routes/media.route");
 const purchaseRoute = require("./routes/purchaseCourse.route");
+const courseProgressRoute = require("./routes/courseProgress.route");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 dotenv.config({});
@@ -18,6 +19,7 @@ app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/purchase", purchaseRoute);
+app.use("/api/v1/progress", courseProgressRoute);
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port 8080");
 });
