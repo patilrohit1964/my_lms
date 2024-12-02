@@ -1,11 +1,12 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardTitle } from '@/components/ui/card'
-import { useGetCourseProgressQuery, useUpdateLectureProgressMutation } from '@/features/api/courseProgressApi'
+import { useCompletedCourseMutation, useGetCourseProgressQuery, useInCompletedCourseMutation, useUpdateLectureProgressMutation } from '@/features/api/courseProgressApi'
 import axios from 'axios'
-import { CheckCircle2, CirclePlay } from 'lucide-react'
+import { CheckCircle, CheckCircle2, CirclePlay } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 
 const CourseProgress = () => {
@@ -14,7 +15,19 @@ const CourseProgress = () => {
     const { data, isLoading, isError, error, refetch } = useGetCourseProgressQuery(courseId);
     const [currentLecture, setCurrentLecture] = useState(null);
     const [updateLectureProgress] = useUpdateLectureProgressMutation();
+    const [completedCourse, { data: markCompleteData, isSuccess: completedSuccess, }] = useCompletedCourseMutation();
+    const [inCompletedCourse, { data: markInCompleteData, isSuccess: inCompleteSuccess }] = useInCompletedCourseMutation();
 
+    useEffect(() => {
+        if (completedSuccess) {
+            refetch()
+            toast.success(markCompleteData.message)
+        }
+        if (inCompleteSuccess) {
+            refetch()
+            toast.success(markInCompleteData.message)
+        }
+    }, [completedSuccess, inCompleteSuccess])
     if (isLoading) return <p className='mt-24'>Loading...</p>
     if (error) {
         console.log("error status:", error.status)
@@ -29,15 +42,23 @@ const CourseProgress = () => {
         return progress.some((prog) => prog.lectureId === lectureId && prog.viewed)
     }
 
+    const handleLectureProgress = async (lectureId) => {
+        await updateLectureProgress({ courseId, lectureId });
+        refetch();
+    }
+
     // handle select a specific lecture to watch
     const handleSelectLecture = (lecture) => {
         // setCurrentLecture(courseDetails?.lectures?.find((lect) => lect._id === lectureId))
         setCurrentLecture(lecture);
+        handleLectureProgress(lecture?._id)
     }
 
-    const handleLectureProgress = async (lectureId) => {
-        await updateLectureProgress({ courseId, lectureId });
-        refetch();
+    const handleCompleteCourse = async () => {
+        await completedCourse(courseId)
+    }
+    const handleInCompleteCourse = async () => {
+        await inCompletedCourse(courseId)
     }
 
     return (
@@ -45,7 +66,9 @@ const CourseProgress = () => {
             {/* display course name */}
             <div className='flex justify-between mb-4'>
                 <h1 className='text-2xl font-bold'>Course Title</h1>
-                <Button>Completed</Button>
+                <Button onClick={completed ? handleInCompleteCourse : handleCompleteCourse} variant={completed ? "outline" : "default"}>
+                    {completed ? <div className='flex items-center'><CheckCircle className='mr-2' /> <span>Completed</span></div> : "Marked as completed"}
+                </Button>
             </div>
             <div className='flex flex-col md:flex-row gap-6'>
                 {/* video session */}

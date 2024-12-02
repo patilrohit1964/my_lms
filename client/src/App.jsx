@@ -16,6 +16,7 @@ import CreateLecture from './pages/admin/lecture/CreateLecture'
 import EditLecture from './pages/admin/lecture/EditLecture'
 import CourseDetails from './pages/student/CourseDetails'
 import CourseProgress from './pages/student/courseProgress'
+import SearchPage from './pages/student/SearchPage'
 
 
 const appRouter = createBrowserRouter([
@@ -50,6 +51,10 @@ const appRouter = createBrowserRouter([
       {
         path: "course-progress/:courseId",
         element: <CourseProgress />
+      },
+      {
+        path: "course/search",
+        element: <SearchPage />
       },
       // adming routes start from here
       {
