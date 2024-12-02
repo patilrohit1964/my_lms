@@ -6,6 +6,7 @@ const {
 } = require("../utils/cloudinary");
 
 exports.createCourse = async (req, res) => {
+
   try {
     const { courseTitle, category } = req.body;
     if (!courseTitle || !category) {

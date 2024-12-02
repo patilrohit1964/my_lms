@@ -14,8 +14,10 @@ exports.getCourseProgress = async (req, res) => {
 
     const courseDetails = await Course.findById(courseId).populate("lectures");
 
-    if (!courseDetails) {
-      return res.status(404).json({ message: "Course not found" });
+    if (!courseProgress) {
+      return res.status(200).json({
+        data: { courseDetails, progress: [], completed: false },
+      });
     }
     // step 2 if no progress found return course details with an empty progress
     if (!courseProgress) {
@@ -33,6 +35,10 @@ exports.getCourseProgress = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({
+      message: "Server Error getting course progress",
+      success: false,
+    });
   }
 };
 
@@ -44,7 +50,7 @@ exports.updateLectureProgress = async (req, res) => {
     // step 1 fetch or create course progress
     let courseProgress = await CourseProgress.findOne({ courseId, userId });
     if (!courseProgress) {
-      courseProgress = new courseProgress({
+      courseProgress = new CourseProgress({
         courseId,
         userId,
         completed: false,
