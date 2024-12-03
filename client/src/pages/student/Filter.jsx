@@ -5,18 +5,20 @@ import { Separator } from '@/components/ui/separator'
 import React, { useState } from 'react'
 
 
-const Category = [
-  { id: 1, label: "HTML & CSS Fundamentals" },
-  { id: 2, label: "JavaScript Basics" },
-  { id: 3, label: "React.js Essentials" },
-  { id: 4, label: "Node.js and Express Basics" },
-  { id: 6, label: "Full-Stack " },
-  { id: 7, label: "Docker" },
-  { id: 8, label: "Java" },
-  { id: 9, label: "Gsap" },
-  { id: 10, label: "Three.js" },
-  { id: 11, label: "Python" },
+const categories = [
+  { id: "nextjs", label: "Next JS" },
+  { id: "data science", label: "Data Science" },
+  { id: "frontend development", label: "Frontend Development" },
+  { id: "fullstack development", label: "Fullstack Development" },
+  { id: "mern stack development", label: "MERN Stack Development" },
+  { id: "backend development", label: "Backend Development" },
+  { id: "javascript", label: "Javascript" },
+  { id: "python", label: "Python" },
+  { id: "docker", label: "Docker" },
+  { id: "mongodb", label: "MongoDB" },
+  { id: "html", label: "HTML" },
 ];
+
 const Filter = ({ handleFilterChange }) => {
 
   const [selectedCategories, setSelectedCategories] = useState([])
@@ -54,7 +56,7 @@ const Filter = ({ handleFilterChange }) => {
       <Separator className="my-4" />
       <div>
         <h1 className='font-semibold mb-2'>Category</h1>
-        {Category.map((category) => (
+        {categories.map((category) => (
           <div className='flex items-center space-x-2 my-2' key={category?.id}>
             <Checkbox id={category.id} onCheckedChange={() => handleCategoryChange(category.id)} />
             <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{category.label}</Label>

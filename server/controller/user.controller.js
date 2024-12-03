@@ -76,9 +76,13 @@ exports.getUserProfile = async (req, res) => {
   try {
     const userId = req.id;
     // if we don't need password then use -password
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate("enrolledCourses");
     if (!user) {
-      return status(404).json({ success: false, message: "Profile Not Found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Profile Not Found" });
     }
     return res.status(200).json({ success: true, user });
   } catch (error) {

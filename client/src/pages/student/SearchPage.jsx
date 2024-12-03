@@ -22,6 +22,7 @@ const SearchPage = () => {
     });
 
     const isEmpty = !isLoading && data?.courses.length === 0
+    
     const handleFilterChange = (categories, price) => {
         setSelectedCategories(categories)
         setSortByPrice(price)
