@@ -16,9 +16,11 @@ const {
   getLectureById,
   togglePublishCourse,
   getPublishedCourse,
+  searchCourse,
 } = require("../controller/course.controller");
 
 router.route("/").post(isAuthenticated, createCourse);
+router.route("/search").get(isAuthenticated, searchCourse);
 router.route("/published-courses").get(isAuthenticated, getPublishedCourse);
 router.route("/").get(isAuthenticated, getAllCreatorCourses);
 router

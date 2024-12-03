@@ -6,7 +6,6 @@ const {
 } = require("../utils/cloudinary");
 
 exports.createCourse = async (req, res) => {
-
   try {
     const { courseTitle, category } = req.body;
     if (!courseTitle || !category) {
@@ -21,6 +20,47 @@ exports.createCourse = async (req, res) => {
       message: "Course created successfully",
       success: true,
       course,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Server Error",
+      success: false,
+    });
+  }
+};
+
+exports.searchCourse = async (req, res) => {
+  try {
+    const { query = "", categories = [], sortByPrice = "" } = req.query;
+
+    // create search query
+    const searchCirteria = {
+      isPublished: true,
+      $or: [
+        { courseTitle: { $regex: query, $options: "i" } },
+        { subTitle: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+      ],
+    };
+    // if categories selected
+    if (categories.length > 0) {
+      searchCirteria.category = { $in: categories };
+    }
+
+    // define sorting order
+    const sortOptions = {};
+    if (sortByPrice === "low") {
+      sortOptions.coursePrice = 1; //sort by price in ascending order
+    } else if (sortByPrice === "high") {
+      sortOptions.coursePrice = -1; //sort by price in descending order
+    }
+    let courses = await Course.find(searchCirteria)
+      .populate({ path: "creator", select: "name photoUrl" })
+      .sort(sortOptions);
+    res.status(200).json({
+      success: true,
+      courses: courses || [],
     });
   } catch (error) {
     console.log(error);
