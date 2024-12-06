@@ -91,7 +91,7 @@ const CourseProgress = () => {
                     <h2 className='font-semibold text-xl mb-4'>course Lecture</h2>
                     <div className='flex-1 overflow-y-auto'>
                         {data?.data?.courseDetails?.lectures?.map((lecture, index) => (
-                            <Card key={index} className={`hover:cursor-pointer mb-3 transition transform ${lecture._id === currentLecture?._id ? 'bg-gray-200' : 'dark:bg-gray-800'}`} onClick={() => handleSelectLecture(lecture)}>
+                            <Card key={index} className={`hover:cursor-pointer mb-3 transition transform ${lecture._id === currentLecture?._id ? 'bg-gray-200 text-black' : 'dark:bg-gray-800'}`} onClick={() => handleSelectLecture(lecture)}>
                                 <CardContent className="flex items-center justify-between p-4">
                                     <div className='flex items-center'>
                                         {isLectureCompleted(lecture?._id) ?

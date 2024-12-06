@@ -19,6 +19,7 @@ import HeroSection from './pages/student/HeroSection'
 import MyLearning from './pages/student/MyLearning'
 import Profile from './pages/student/Profile'
 import SearchPage from './pages/student/SearchPage'
+import { ThemeProvider } from './components/ThemeProvider'
 
 
 const appRouter = createBrowserRouter([
@@ -102,8 +103,9 @@ function App() {
 
   return (
     <div>
-
-      <RouterProvider router={appRouter}></RouterProvider>
+      <ThemeProvider>
+        <RouterProvider router={appRouter}></RouterProvider>
+      </ThemeProvider>
 
     </div>
   )

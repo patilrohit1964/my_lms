@@ -104,7 +104,7 @@ const Navbar = () => {
             {/* mobile device */}
             <div className="flex md:hidden h-full items-center justify-between px-4">
                 <h1 className="font-extrabold text-2xl">E-Learning</h1>
-                <MobileNavbar />
+                <MobileNavbar user={user} />
             </div>
         </div>
     )
@@ -112,30 +112,30 @@ const Navbar = () => {
 
 export default Navbar
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ user }) => {
 
-    const role = "instructor"
+    const navigate = useNavigate()
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="rounded-full bg-gray-200 hover:bg-slate-300">
+                <Button variant="outline" size="icon" className="rounded-full hover:bg-slate-300">
                     <Menu />
                 </Button>
             </SheetTrigger>
             <SheetContent className="flex flex-col">
                 <SheetHeader className="flex flex-row items-center justify-between mt-2">
-                    <SheetTitle>E-Learning</SheetTitle>
+                    <SheetTitle><Link to={"/"}>E-learning</Link></SheetTitle>
                     <DarkMode />
                 </SheetHeader>
                 <nav className="flex flex-col gap-4">
-                    <span>My Learning</span>
-                    <span>Edit Profile</span>
-                    <span>Log Out</span>
+                    <Link to={"/my-learning"}>My Learning</Link>
+                    <Link to={"/profile"}>Edit Profile</Link>
+                    <p>Log Out</p>
                 </nav>
-                {role === "instructor" && (
+                {user?.role === "instructor" && (
                     <SheetFooter>
                         <SheetClose asChild>
-                            <Button type="submit">DashBoard</Button>
+                            <Button type="submit" onClick={() => navigate("admin/dashboard")}>DashBoard</Button>
                         </SheetClose>
                     </SheetFooter>
 
@@ -144,4 +144,5 @@ const MobileNavbar = () => {
             </SheetContent>
         </Sheet>
     )
+
 }

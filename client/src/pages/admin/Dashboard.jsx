@@ -22,10 +22,10 @@ const Dashboard = () => {
 
     }))
 
-    const totalRevenue = purchasedCourses?.reduce((acc, element) => acc + (element.amount || 0), 0)
-    const totalSales = purchasedCourses?.length
+    const totalRevenue = purchasedCourses?.reduce((acc, element) => acc + (element.amount || 0), 0);
+    const totalSales = purchasedCourses?.length;
     return (
-        <div className='grid mt-20 gap-6 grid-cols-1 ml-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+        <div className='grid mt-8 gap-6 grid-cols-1 ml-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
             <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader>
                     <CardTitle>Total Sales</CardTitle>
