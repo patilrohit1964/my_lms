@@ -123,7 +123,6 @@ exports.stripeWebhook = async (req, res) => {
         { $addToSet: { enrolledStudents: purchase.userId } }, // Add course ID to enrolledCourses
         { new: true }
       );
-
       // Update course to add user ID to enrolledStudents
       await Course.findByIdAndUpdate(
         purchase.courseId._id,

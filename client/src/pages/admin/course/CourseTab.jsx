@@ -150,11 +150,22 @@ const CourseTab = () => {
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Category</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">Banana</SelectItem>
-                                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                                    <SelectItem value="grapes">Grapes</SelectItem>
-                                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                                    <SelectItem value="Next JS">Next JS</SelectItem>
+                                    <SelectItem value="Data Science">Data Science</SelectItem>
+                                    <SelectItem value="Frontend Development">
+                                        Frontend Development
+                                    </SelectItem>
+                                    <SelectItem value="Fullstack Development">
+                                        Fullstack Development
+                                    </SelectItem>
+                                    <SelectItem value="MERN Stack Development">
+                                        MERN Stack Development
+                                    </SelectItem>
+                                    <SelectItem value="Javascript">Javascript</SelectItem>
+                                    <SelectItem value="Python">Python</SelectItem>
+                                    <SelectItem value="Docker">Docker</SelectItem>
+                                    <SelectItem value="MongoDB">MongoDB</SelectItem>
+                                    <SelectItem value="HTML">HTML</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>

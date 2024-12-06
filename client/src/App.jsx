@@ -1,21 +1,23 @@
 import { RouterProvider } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 import './App.css'
+import { AdminRoute, AuhtenticatedUser, ProtectedRoute } from './components/ProtectedRoute'
+import PurchasedCourseRoute from './components/PurchasedCourseRoute'
 import MainLayout from './layout/MainLayout'
+import AddCourse from './pages/admin/course/AddCourse'
+import CourseTable from './pages/admin/course/CourseTable'
+import EditCourse from './pages/admin/course/EditCourse'
 import Dashboard from './pages/admin/Dashboard'
+import CreateLecture from './pages/admin/lecture/CreateLecture'
+import EditLecture from './pages/admin/lecture/EditLecture'
 import Sidebar from './pages/admin/Sidebar'
 import Login from './pages/Login'
+import CourseDetails from './pages/student/CourseDetails'
+import CourseProgress from './pages/student/courseProgress'
 import Courses from './pages/student/Courses'
 import HeroSection from './pages/student/HeroSection'
 import MyLearning from './pages/student/MyLearning'
 import Profile from './pages/student/Profile'
-import CourseTable from './pages/admin/course/CourseTable'
-import AddCourse from './pages/admin/course/AddCourse'
-import EditCourse from './pages/admin/course/EditCourse'
-import CreateLecture from './pages/admin/lecture/CreateLecture'
-import EditLecture from './pages/admin/lecture/EditLecture'
-import CourseDetails from './pages/student/CourseDetails'
-import CourseProgress from './pages/student/courseProgress'
 import SearchPage from './pages/student/SearchPage'
 
 
@@ -34,32 +36,37 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />
+        element: <AuhtenticatedUser><Login /></AuhtenticatedUser>
       },
       {
         path: "my-learning",
-        element: <MyLearning />
+        element: <ProtectedRoute><MyLearning /></ProtectedRoute>
       },
       {
         path: "profile",
-        element: <Profile />
+        element: <ProtectedRoute><Profile /></ProtectedRoute>
       },
       {
         path: "course-detail/:courseId",
-        element: <CourseDetails />
+        element: <ProtectedRoute><CourseDetails /></ProtectedRoute>
       },
       {
         path: "course-progress/:courseId",
-        element: <CourseProgress />
+        element:
+          <ProtectedRoute>
+            <PurchasedCourseRoute>
+              <CourseProgress />
+            </PurchasedCourseRoute>
+          </ProtectedRoute>
       },
       {
         path: "course/search",
-        element: <SearchPage />
+        element: <ProtectedRoute> <SearchPage /></ProtectedRoute>
       },
       // adming routes start from here
       {
         path: "admin",
-        element: <Sidebar />,
+        element: <AdminRoute> <Sidebar /></AdminRoute>,
         children: [
           {
             path: "dashboard",

@@ -21,7 +21,7 @@ const Profile = () => {
     const onChangeHandler = (e) => {
         const file = e.target.files?.[0]
         if (file) {
-            setProfilePhoto(file)
+            setProfilePhoto(file);
         }
     }
 
@@ -39,12 +39,14 @@ const Profile = () => {
     useEffect(() => {
         if (updateUserSuccess) {
             refetch();
-            toast.success(data.message || 'Profile updated successfully')
+            toast.success(data.message || 'Profile updated successfully');
         }
         if (updateUserError) {
             toast.error('Failed to update profile');
         }
     }, [updateUserError, updateUserData, updateUserSuccess])
+
+    const user = data && data.user;
 
     return (
         <div className='max-w-4xl mx-auto px-4 my-24'>
@@ -52,7 +54,7 @@ const Profile = () => {
             <div className='flex flex-col md:flex-row items-center md:items-start gap-8 my-5'>
                 <div className='flex flex-col items-center'>
                     <Avatar className="h-24 w-24 md:h-32 md:w-32 mb-4">
-                        <AvatarImage src={data?.user?.photoUrl || './vite.svg'} />
+                        <AvatarImage src={user?.photoUrl || './vite.svg'} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>
@@ -60,19 +62,19 @@ const Profile = () => {
                     <div className='mb-2'>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-100'>
                             Name:
-                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{data?.user?.name}</span>
+                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.name}</span>
                         </h1>
                     </div>
                     <div className='mb-2'>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-100'>
                             Email:
-                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{data?.user?.email}</span>
+                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.email}</span>
                         </h1>
                     </div>
                     <div className='mb-2'>
                         <h1 className='font-semibold text-gray-900 dark:text-gray-100'>
                             Role:
-                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{data?.user?.role.toUpperCase()}</span>
+                            <span className='font-normal text-gray-700 dark:text-gray-300 ml-2'>{user?.role.toUpperCase()}</span>
                         </h1>
                     </div>
                     <Dialog>
@@ -112,12 +114,10 @@ const Profile = () => {
             <div>
                 <h1 className='font-medium text-xl'>Courses You Are Enrolled</h1>
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5'>
-                    {data?.user?.enrolledCourses == 0 ? <h1>You Haven't Enrolled yet</h1> :
-
-                        data?.user?.enrolledCourses.map(course => (
+                    {user?.enrolledCourses?.length == 0 ? <h1>You Haven't Enrolled yet</h1> :
+                        user?.enrolledCourses?.map(course => (
                             <Course key={course._id} course={course} />
                         ))
-
                     }
                 </div>
             </div>
