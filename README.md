@@ -1,4 +1,4 @@
-<img src="./public/lms_sc/home_landing.png"/>
+<img src="D:/my_css_project_all/lms_course_project/my_lms/client/public/lms_sc/home_landing.png"/>
 <img src="./public/lms_sc/course_landing.png"/>
 <img src="./public/lms_sc/profile_landing.png"/>
 <img src="./public/lms_sc/courses_landing.png"/>
