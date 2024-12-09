@@ -64,8 +64,8 @@
         <li><h4>Install Dependencies:</h4></li>
         <p>npm install</p>
         <li><strong>Set Up Environment Variables:</strong> Create a .env file in the root directory and add the required variables:</li>
-        <p>DB_URI=<your-database-uri></p>
-        <p>JWT_SECRET=<your-jwt-secret></p>
+        <p>DB_URI=your-database-uri</p>
+        <p>JWT_SECRET=your-jwt-secret</p>
         <p>NODE_ENV=development</p>
         <li>Run the Application:</li>
         <p>npm run dev</p>
