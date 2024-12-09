@@ -1,27 +1,35 @@
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675437/home_landing_csjwco.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675436/course_landing_c1zyms.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675435/profile_landing_ws53sa.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675431/purchase_landing_vxefvi.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675431/couresLecture_landing_dixswr.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675430/courses_landing_tdi4zt.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675432/edit_landing_yhpkz9.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675431/create_landing_gq3yvm.png"/>
 </div>
+<hr/>
 <div style="margin:10px 8px;">
     <img src="https://res.cloudinary.com/dml8barkp/image/upload/v1733675433/payment_landing_iquhk6.png"/>
 </div>
@@ -32,7 +40,7 @@
     <h2>Overview</h2>
     <p>The LMS App is a web-based platform designed to streamline the management of educational content, learners, and assessments. It offers an intuitive interface for administrators, educators, and students to engage seamlessly in online learning.</p>
 </div>
-
+<hr/>
 <div>
     <h2>Features</h2>
     <ul>
@@ -43,7 +51,7 @@
         <li><strong>Responsive Design:</strong> Accessible on both desktop and mobile devices.</li>
     </ul>
 </div>
-
+<hr/>
 <div>
     <h2>Tech Stack</h2>
     <ul>
@@ -54,7 +62,7 @@
         <li><strong>Other Libraries/Tools: [RTK Query,AOS Animation Library, etc.]</strong></li>
     </ul>
 </div>
-
+<hr/>
 <div>
     <h2>Setup Instructions:</h2>
     <ol>
@@ -70,5 +78,4 @@
         <li>Run the Application:</li>
         <p>npm run dev</p>
     </ol>
-
 </div>
