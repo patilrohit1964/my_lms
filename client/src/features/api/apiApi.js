@@ -46,7 +46,7 @@ export const authApi = createApi({
     loadUser: builder.query({
       query: () => ({
         url: "profile",
-        method: "GET",
+        method: "GET",  
       }),
       async onQueryStarted(args, { queryFulfilled, dispatch }) {
         try {
